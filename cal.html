@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1b1b1b; /* Darker background for the body */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #root {
+      width: 100%;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    const Calculator = () => {
+      const [input, setInput] = React.useState("");
+
+      const handleButtonClick = (value) => {
+        if (value === "=") {
+          try {
+            setInput(eval(input).toString()); // Caution: eval can be unsafe; use a math parser library in production.
+          } catch (error) {
+            setInput("Error");
+          }
+        } else if (value === "C") {
+          setInput("");
+        } else {
+          setInput(input + value);
+        }
+      };
+
+      const calculatorStyle = {
+        width: "300px",
+        margin: "50px auto",
+        background: "linear-gradient(145deg, #1c1c1c, #121212)", /* Darker gradient */
+        borderRadius: "10px",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.4)", /* Darker shadow */
+        overflow: "hidden",
+      };
+
+      const displayStyle = {
+        backgroundColor: "#111", /* Darkest background for the display area */
+        color: "#aaa", /* Grey color for numbers */
+        fontSize: "2em",
+        textAlign: "right",
+        padding: "20px",
+        height: "80px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+      };
+
+      const buttonsStyle = {
+        display: "grid",
+        gridTemplateColumns: "repeat(4, 1fr)",
+        gap: "10px", /* Added gap between buttons */
+        padding: "10px",
+      };
+
+      const buttonStyle = {
+        backgroundColor: "#1c1c1c", /* Same as calculator background */
+        color: "#aaa", /* Grey color for button text */
+        fontSize: "1.5em",
+        padding: "20px",
+        cursor: "pointer",
+        outline: "none",
+        transition: "background-color 0.2s, transform 0.1s",
+        borderRadius: "8px", /* Rounded buttons */
+        border: "none", /* Border removed */
+        boxShadow: "0 4px 6px rgba(128, 128, 128, 0.5)", /* Grey shadow */
+      };
+
+      const buttonHoverStyle = {
+        backgroundColor: "#333", /* Slightly lighter on hover */
+        transform: "scale(1.1)", /* Scale up effect */
+      };
+
+      return (
+        <div style={calculatorStyle}>
+          <div style={displayStyle}>{input || "0"}</div>
+          <div style={buttonsStyle}>
+            {["7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "-", "C", "0", "=", "+"].map((btn) => (
+              <button
+                key={btn}
+                onClick={() => handleButtonClick(btn)}
+                style={buttonStyle}
+                onMouseEnter={(e) => e.target.style.backgroundColor = "#333"}
+                onMouseLeave={(e) => e.target.style.backgroundColor = "#1c1c1c"}
+              >
+                {btn}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<Calculator />, document.getElementById("root"));
+  </script>
+</body>
+</html>
